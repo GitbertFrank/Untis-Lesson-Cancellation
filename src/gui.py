@@ -1,4 +1,5 @@
 import tkinter as tk
+from api import loginlogic
 
 class PlaceholderEntry(tk.Entry):
     def __init__(self, master=None, placeholder="PLACEHOLDER", color='grey', *args, **kwargs):
@@ -30,22 +31,25 @@ class Startscreen:
 
         self.logo = tk.PhotoImage(file="C:/Users/Robert Frank/Desktop/Coding/Python/Untis-Lesson-Cancellation/resources/Untis.png")
 
-        self.label = tk.Label(self.root, text="WebUntis", image=self.logo, compound="right", font=("Helvetica", 20))
-        self.label.pack(pady=10)
-        self.label.configure(bg='orange')
+        self.text_label = tk.Label(self.root, text="WebUntis", font=("Helvetica", 30), bg='orange')
+        self.text_label.place(x=0, y=0, anchor='nw')
+
+        self.image_label = tk.Label(self.root, image=self.logo, bg='orange')
+        self.image_label.place(x=1920, y=0, anchor='n')
 
         self.entry1 = PlaceholderEntry(self.root, placeholder="Username", font=("Helvetica", 14))
-        self.entry1.pack(pady=5)
+        self.entry1.pack(pady=30, padx= 100)
 
         self.entry2 = PlaceholderEntry(self.root, placeholder="Password", font=("Helvetica", 14))
-        self.entry2.pack(pady=20)
+        self.entry2.pack(padx= 100)
 
-        self.button = tk.Button(self.root, text="Quit", command=self.root.quit)
-        self.button.pack(pady=10)
+        self.button = tk.Button(self.root, text="Login", command=loginlogic, font=("Helvetica", 14))
+        self.button.pack(pady=50)
+        self.button.configure(bg='green', width= 50, height= 3)
+
+        self.button = tk.Button(self.root, text="Quit", command=self.root.quit, font=("Helvetica", 18))
+        self.button.pack(pady=150)
+        self.button.configure(bg='red', width= 50, height= 3)
 
     def run(self):
         self.root.mainloop()
-
-if __name__ == "__main__":
-    app = Startscreen()
-    app.run()
