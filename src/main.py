@@ -1,4 +1,4 @@
-from gui import Startscreen
+from UntisApi import Startscreen
 
 def main():
     app = Startscreen()
