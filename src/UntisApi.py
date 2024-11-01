@@ -1,55 +1,39 @@
-import tkinter as tk
-from CalendarApi import loginlogic
+import webuntis
+import datetime
 
-class PlaceholderEntry(tk.Entry):
-    def __init__(self, master=None, placeholder="PLACEHOLDER", color='grey', *args, **kwargs):
-        super().__init__(master, *args, **kwargs)
-        self.placeholder = placeholder
-        self.placeholder_color = color
-        self.default_fg_color = self['fg']
-        
-        self.bind("<FocusIn>", self._clear_placeholder)
-        self.bind("<FocusOut>", self._add_placeholder)
-        
-        self._add_placeholder()
-        
-    def _clear_placeholder(self, e):
-        if self['fg'] == self.placeholder_color:
-            self.delete(0, tk.END)
-            self['fg'] = self.default_fg_color
+with open("C:/Users/Robert Frank/Desktop/Coding/Python/UntisToCalendar/src/credentials.txt") as creds_file:
+    creds = creds_file.readlines()
 
-    def _add_placeholder(self, e=None):
-        if not self.get():
-            self['fg'] = self.placeholder_color
-            self.insert(0, self.placeholder)
+creds = [line.strip() for line in creds]
 
-class Startscreen:
-    def __init__(self):
-        self.root = tk.Tk()
-        self.root.title("Untis")
-        self.root.configure(bg='gray')
+s = webuntis.Session(
+    server=creds[0],
+    username=creds[1],
+    password=creds[2],
+    school=creds[3],
+    useragent=creds[4]
+)
 
-        self.logo = tk.PhotoImage(file="C:/Users/Robert Frank/Desktop/Coding/Python/UntisToCalender/resources/Untis.png")
+s.login()
 
-        self.text_label = tk.Label(self.root, text="WebUntis", font=("Helvetica", 30), bg='orange')
-        self.text_label.place(x=0, y=0, anchor='nw')
+start_date = datetime.datetime(2024, 11, 1)
+end_date = datetime.datetime(2024, 11, 7)
 
-        self.image_label = tk.Label(self.root, image=self.logo, bg='orange')
-        self.image_label.place(x=1920, y=0, anchor='n')
+# not usable:
+# getTimetable: timetable view for the requested element
+# getTeachers: masterdata teachers read for all
+# getStudents: masterdata students read for all
+# getKlassen: masterdata Klassen read for all
+# getClassregEvents: classregevents read for all
+# getExams: examinations read for all
+# getExamTypes: examtypes read for all
+# getTimetableWithAbsences: Student absences
+# getClassregCategories: classregister
+# getClassregCategoryGroups: classregister
+# getClassregEvents: classevent
 
-        self.entry1 = PlaceholderEntry(self.root, placeholder="Username", font=("Helvetica", 14))
-        self.entry1.pack(pady=30, padx= 100)
+status_data = s.statusdata()
 
-        self.entry2 = PlaceholderEntry(self.root, placeholder="Password", font=("Helvetica", 14))
-        self.entry2.pack(padx= 100)
-
-        self.button = tk.Button(self.root, text="Login", command=loginlogic, font=("Helvetica", 14))
-        self.button.pack(pady=50)
-        self.button.configure(bg='green', width= 50, height= 3)
-
-        self.button = tk.Button(self.root, text="Quit", command=self.root.quit, font=("Helvetica", 18))
-        self.button.pack(pady=150)
-        self.button.configure(bg='red', width= 50, height= 3)
-
-    def run(self):
-        self.root.mainloop()
+# Extract the lstypes and codes from the status data
+print(status_data)
+s.logout()
